@@ -1,0 +1,37 @@
+{% extends "blog_base.html" %}
+
+{% block title %} 发布文字 {% endblock %}   
+
+
+{% block article %} 
+{% if form.errors %}
+    <div class="alert alert-error">
+        Please correct the error {{ form.errors|pluralize }} below.
+    </div>
+{% endif %}
+
+<form action="" method="post">
+    {% csrf_token %} 
+    <div class="field">
+        {% if form.caption.errors %}
+        <div class="alert alert-error">
+            {{ form.caption.errors }}          
+        </div>
+        {% endif %}
+        <label for="id_caption">Title: </label>
+        {# <input class="input-xxlarge" id="id_caption" type="text" name="caption"> #}
+        {{ form.caption }}
+    </div>
+    <div class="field">
+        {% if form.content.errors %}
+        <div class="alert alert-error">
+            {{ form.content.errors }}
+        </div>
+        {% endif %}        
+        <label for="id_content">Content: </label>
+        {# <textarea class="input-xxlarge" name="content" id="id_content" rows="20"></textarea> #}
+        {{ form.content }}
+    </div>
+    <input class="btn btn-primary" type="submit" value="save and add">
+</form>
+{% endblock %}

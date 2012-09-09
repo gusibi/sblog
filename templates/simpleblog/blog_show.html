@@ -1,0 +1,68 @@
+{% extends "blog_base.html" %}
+{% load comments %}
+{% load gravatar %}
+
+{% block title %} {{ blog.caption }} {% endblock %}   
+
+
+{% block article %} 
+<article>
+    {% block article_title %}
+        <h1>{{ blog.caption }}</h1>
+        {% endblock %}
+
+        {% load markup %}
+        {% block article_content %}
+            {{ blog.content|markdown }}
+        {% endblock %} 
+        <div class="row-fluid">
+            <div class="span3">
+                <p>  
+                    {% for tag in blog.tags.all %}
+                        <i class="icon-tag"></i>  {{ tag }}
+                    {% endfor %}
+                </p>  
+            </div>
+            <div class="span2 offset7">
+                <a href="/smallblog/blog/{{ blog.id }}/del/" title="delete"><i class="icon-trash"></i></a>
+                <a href="/smallblog/blog/{{ blog.id }}/update/" title="edit"><i class="icon-edit"></i></a>
+                <a href="#cmt" title="comment"><i class=" icon-comment"></i></a>
+            </div>
+        </div> 
+    {% endblock %}
+</article>
+{% block comments %}    
+<article>     
+    {% get_comment_form for blog as blog_form %}    
+        <form action="{% comment_form_target %}" method="post">
+        {% csrf_token %}
+        {{ blog_form.object_pk }}
+        {{ blog_form.content_type }}
+        {{ blog_form.timestamp }}
+        {{ blog_form.site }}
+        {{ blog_form.submit_date }}
+        {{ blog_form.security_hash }}
+        <p><label for="id_email">email: </label><input class="input-xxlarge" id="id_email" type="email" name="email"></p>
+        <p><label for="id_comment">comment: </label><textarea class="input-xxlarge" id="id_comment" name="comment" placeholder="please enter comment" required="required"></textarea></p>
+        <p style="display:none;"><label for="id_honeypot">如果你在该字段中输入任何内容，那么你的评论就会被视为垃圾评论。</label> <input type="text" name="honeypot" id="id_honeypot"></p>
+        <tr>
+          <td colspan="2">
+            <input class="btn btn-info" type="submit" name="submit" value="Post">
+            {# <input class="btn btn-info" type="submit" name="preview" value="Preview"> #}
+            <input type='hidden' name='next' value='{{ url }}'/>
+          </td>
+        </tr>
+      </form>    
+</article>
+
+<article id="cmt">
+    {% get_comment_list for blog as blog_com %}
+    {% for comment in blog_com %}
+        <div class="well">
+            <img style="width: 48px;height: 48px" src="{% gravatar_url comment.user_email %}">
+            <p class="muted"><small>{{ comment.user }}</small>  在 <small>{{ comment.submit_date|date:"F,j,Y" }}</small>  回应了此文字</p>       
+            {{ comment.comment|markdown }} 
+        </div>                   
+    {% endfor %}
+</article>      
+{% endblock %}

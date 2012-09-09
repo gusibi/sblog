@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>
+        {% block title %}{% endblock %}        
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/reset.css">
+     <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    {# <link rel="stylesheet" href="/static/css/bootstrap-responsive.css">  #}
+    <script src="/static/js/modernizr.js"></script>
+    {% block extra_head %}
+            {% comment %}
+                我认为这是个非常有用的区块, 很多人已经以某种方式在使用了. 很多页面经常需要在 HTML 文档头添加些信息, 比如 RSS 源, Javascript, CSS, 以及别的应该放在文档头的信息. 你可以, 也很可能将会, 定义另外专门的区块 (比如前面的 title 区块) 来添加文档头的其它部分的信息.
+            {% endcomment %}
+    {% endblock %}
+</head>
+
+<body>
+    {% block body %}   
+        {% block header %}
+            {# 任何每个页面都可能修改的文本区域的页面 #}
+            {% block menu %}
+            {# 你的菜单 (导航栏) 应该包含在这个区块中. 它是针对站点级的导航, 不是 每个页面专属的导航菜单. #}
+            {% endblock %}
+        {% endblock %}        
+              
+    <div class="container">
+        {% block content %}
+            {# 这个区块用来放置页面正文内容. 任何页面正文内容都可能不一样. 它不 包含任何站点导航, 信息头, 页脚, 或其它任何属于 base 模板的东东. #}
+
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span9">                            
+                        {% block article %}
+                            {% block article_title %}
+                                {% comment %}
+                                用来指定 content 区块的 "title". 比如 blog 的标题. 
+                                也可以用来 包含 content 内的导航 (译注: 比如提纲), 或其它类似的东东. 
+                                大致都是些 页面中并非主要内容的东东. 
+                                我不知道这个区块是否应该放到 content tag 内, 并且对应于前面建议的 content tag, 
+                                是不是还需要一个 main_content 区块.
+                                {% block [section]_menu %} {% block page_menu %}
+                                这是对应于之前建议的 menu 区块. 用来导航一个章节或页面.
+                                {% endcomment %}
+                            {% endblock %}
+                            {% block article_content %}
+                            {% endblock %}
+                        {% endblock %}
+                        
+                        {% block article_menu %}                                
+                            {% endblock %}
+                            {% block comments %}
+                            {% endblock %}
+                        </div>
+                        <div class="span2 offset1">
+                            {% block aside %}
+                                {% block addblog %}{% endblock %}
+                                {% block search %}{% endblock %}
+                                {% block tags %}{% endblock %}
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+            {% block footer %}
+                {# 任何每个页面都可能修改的文本区域的页脚 #}
+                <p>Thanks for visiting my site! </p>
+            {% endblock %}
+        {% endblock %}
+    </div>
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+</body> 
+
+</html>

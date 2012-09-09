@@ -1,0 +1,25 @@
+@charset "utf-8";
+/**
+*  Author:airenLiao
+*  Blog: http://www.w3cplus.com
+*/
+body,ul,ol,dd{
+    margin:0;
+    padding:0;
+}
+a:hover {
+    text-decoration: none;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+ol, ul {
+    padding-left: 20px;
+}
+ol.errorlist, ul.errorlist {
+  list-style: none outside none;
+}
+article, aside, dialog, figure, footer, header,hgroup, nav, section { 
+    display:block;
+}
