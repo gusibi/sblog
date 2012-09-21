@@ -10,4 +10,6 @@ urlpatterns = patterns(('simpleblog.views'),
     (r'^blog/(?P<id>\w+)/del/$', 'blog_del'),
     (r'^blog/(?P<id>\w+)/update/$', 'blog_update'),
     (r'^blog/add/$', 'blog_add'),
+    (r'^blog/(?P<id>\d+)/addcomment/$', 'blog_add_comment'),
+    (r'^blog/(?P<id>\d+)/commentshow/$', 'blog_show_comment'),
 )

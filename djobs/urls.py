@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-
+from django.contrib.auth.views import login, logout
 from django.conf.urls import patterns, include, url
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from django.conf import settings
 
 admin.autodiscover()
 
@@ -20,21 +21,20 @@ urlpatterns = patterns(('djobs.views'),
     url(r'^now/$', 'current_datetime'),
     url(r'^time/plus/(\d+)/$', 'hours_ahead'),
     url(r'^displaymeta/$', 'request_meta'),
-)
-
-urlpatterns += patterns(('contact.views'),
-    (r'^contact/$', 'contact'),
-    (r'^contact_form/$', 'contact_form'),
-    (r'^contact/thanks/$', 'thanks'),
+    url(r'^image/$', 'my_image'),
+    url(r'^csv/$', 'unruly_passengers_csv'),
+    url(r'^pdf/$', 'hello_pdf'),
+    url(r'^bigpdf/$', 'big_data_pdf'),
 )
 
 urlpatterns += patterns((''),
-    (r'^smallblog/', include('simpleblog.urls')),
+    (r'^simpleblog/', include('simpleblog.urls')),
 )
 
 urlpatterns += patterns((''),
     #静态文件
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
-            {'document_root': '/home/gs/djobs/static/'}
+            {'document_root': settings.STATIC_ROOT}
+            # {'document_root': '/home/gs/djobs/static/'}
     ),
 )

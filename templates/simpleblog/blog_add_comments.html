@@ -1,0 +1,39 @@
+{% load comments %}
+{% get_comment_form for blog as blog_form %}
+<div id="comment_form">
+    <form class="form-horizontal" action="{% comment_form_target %}" method="post">
+        <fieldset>
+        {% csrf_token %}
+        {{ blog_form.object_pk }}
+        {{ blog_form.content_type }}
+        {{ blog_form.timestamp }}
+        {{ blog_form.site }}
+        {{ blog_form.submit_date }}
+        {{ blog_form.security_hash }}
+        <div class="control-group">
+            <label class="control-label" for="id_name">name: </label>
+            <div class="controls">
+                <input type="text" id="id_name" class="input-xlarge" name="name" placeholder="please enter name" required="required">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_email">email: </label>
+            <div class="controls">
+                <input class="input-xlarge" id="id_email" type="email" name="email" placeholder="please enter email" required="required">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_comment">comment: </label>
+            <div class="controls">
+                <textarea class="input-xlarge" id="id_comment" name="comment" placeholder="please enter comment" required="required"></textarea>
+            </div>
+        </div>
+        <p style="display:none;"><label for="id_honeypot">如果你在该字段中输入任何内容，那么你的评论就会被视为垃圾评论。</label> <input type="text" name="honeypot" id="id_honeypot"></p>
+        <div class="form-actions">
+            <input class="btn btn-info" type="submit" name="submit" value="Post">
+            {# <input class="btn btn-info" type="submit" name="preview" value="Preview"> #}
+            <input type='hidden' name='next' value='/simpleblog/blog/{{ blog.id }}/commentshow/'/>
+        </div>
+        </fieldset>
+    </form> 
+</div>

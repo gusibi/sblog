@@ -1,11 +1,12 @@
 {% extends "blog_base.html" %}
+{% load comments %}
 
 {% block title %} blog list {% endblock %}
 
 {% block article %}
-    {% for blog in blogs %} 
-    <article>
-        <h3><a href="/smallblog/blog/{{ blog.id }}">{{ blog.caption }}</a></h3>         
+<article class='content-main'>
+    {% for blog in blogs %}     
+        <h3><a href="/simpleblog/blog/{{ blog.id }}">{{ blog.caption }}</a></h3>         
         <p class="muted">  
             {% for tag in blog.tags.all %}
                 <i class="icon-tag"></i>  <small>{{ tag }}</small>
@@ -19,18 +20,19 @@
                 <p class="muted"><i class="icon-time"></i><small> {{ blog.publish_time }}</small></p>       
             </div>
             <div class="span2 offset7">
-                <a href="/smallblog/blog/{{ blog.id }}/del/" title="delete"><i class="icon-trash"></i></a>
-                <a href="/smallblog/blog/{{ blog.id }}/update/" title="edit"><i class="icon-edit"></i></a>
-                <a href="/smallblog/blog/{{ blog.id }}/" title="comment"><i class=" icon-comment"></i></a>
+                <a href="/simpleblog/blog/{{ blog.id }}/del/" title="delete"><i class="icon-trash"></i></a>
+                <a href="/simpleblog/blog/{{ blog.id }}/update/" title="edit"><i class="icon-edit"></i></a>
+                {% get_comment_count for blog as comment_count %}
+                <a href="/simpleblog/blog/{{ blog.id }}/" title="comment"><i class=" icon-comment"></i>{{ comment_count }}</a>
             </div>
         </div>            
-    <hr>
-    </article>         
-    {% endfor %}   
+    <hr>         
+    {% endfor %} 
+</article>  
 {% endblock %}
 
 {% block aside %}
     {% block addblog %}
-        <a class="btn btn-primary" href="/smallblog/blog/add/"><i class="icon-plus icon-white"></i> add new blog</a>
+        <a class="btn btn-primary" href="/simpleblog/blog/add/"><i class="icon-plus icon-white"></i> add new blog</a>
     {% endblock %}
 {% endblock %}

@@ -1,0 +1,23 @@
+{% load comments %}
+{% load gravatar %}
+{% load markup %}
+<article id="cmt">
+    {% get_comment_count for blog as comment_count %}    
+        <h4 class="muted">{{ comment_count }} Comments</h4>
+        <hr class="soften">  
+    {% get_comment_list for blog as blog_com %}
+    {% for comment in blog_com %}
+        <div class="container-fluid none-padding">
+            <div class="row-fluid">
+                <div class="span1">
+                <img class="gravatar" src="{% gravatar_url comment.user_email %}">
+                </div>
+                <div class="span10">
+                <p class="muted"><small>{{ comment.user }}</small><small>{{ comment.submit_date|date:"F,j,Y" }}</small></p>      
+                {{ comment.comment|markdown }} 
+                </div>
+            </div>           
+        </div>
+        <hr class="soften">                   
+    {% endfor %}
+</article>

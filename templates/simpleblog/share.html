@@ -1,0 +1,19 @@
+<a href="javascript:void(function(){var d=document,e=encodeURIComponent,s1=window.getSelection,s2=d.getSelection,s3=d.selection,s=s1?s1():s2?s2():s3?s3.createRange().text:'',r='http://www.douban.com/recommend/?url='+e(d.location.href)+'&title='+e(d.title)+'&sel='+e(s)+'&v=1',x=function(){if(!window.open(r,'douban','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r+'&r=1'};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})()"><img src="http://img2.douban.com/pics/fw2douban_s.png" alt="推荐到豆瓣" /></a>
+
+
+<script type="text/javascript" src="http://widget.renren.com/js/rrshare.js"></script>
+<a name="xn_share" onclick="shareClick()" type="icon" href="javascript:;"></a>
+<script type="text/javascript">
+    function shareClick() {
+        var rrShareParam = {
+            resourceUrl : '',   //分享的资源Url
+            srcUrl : '',    //分享的资源来源Url,默认为header中的Referer,如果分享失败可以调整此值为resourceUrl试试
+            pic : '',       //分享的主题图片Url
+            title : '',     //分享的标题
+            description : ''    //分享的详细描述
+        };
+        rrShareOnclick(rrShareParam);
+    }
+</script>
+
+<a href="javascript:var d=document,w=window,f='http://fanfou.com/share',l=d.location,e=encodeURIComponent,p='?u='+e(l.href)+'?t='+e(d.title)+'?d='+e(w.getSelection?w.getSelection().toString():d.getSelection?d.getSelection():d.selection.createRange().text)+'?s=bl';if(!w.open(f+'r'+p,'sharer','toolbar=0,status=0,width=600,height=400')){l.href=f+'.new'+p;}void(0)"><img src="http://static.fanfou.com/img/icon.gif" alt="分享到饭否" /></a>

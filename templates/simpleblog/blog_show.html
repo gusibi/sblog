@@ -2,67 +2,142 @@
 {% load comments %}
 {% load gravatar %}
 
-{% block title %} {{ blog.caption }} {% endblock %}   
+{% block title %} {{ blog.caption }} {% endblock %}  
+{% block script %}
+    <script type="text/javascript" charset="utf-8">
+function bindPostCommentHandler() {
+    $('#comment_form form input.submit-preview').remove();
+    $('#comment_form form').submit(function() {
+        $.ajax({
+            type: "POST",
+            data: $('#comment_form form').serialize(),
+            url: "{% comment_form_target %}",
+            cache: false,
+            dataType: "html",
+            success: function(html, textStatus) {
+                $('#cmt').replaceWith(html);
+                $('#comment_form form')[0].reset();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $('#comment_form form').replaceWith('Your comment was unable to be posted at this time.  We apologise for the inconvenience.');
+            }
+        });
+        return false;
+    });
+}
+ 
+$(document).ready(function() {
+    bindPostCommentHandler();
+});
+</script>  
+{% endblock %} 
 
 
 {% block article %} 
-<article>
+<article class="content-main">
     {% block article_title %}
-        <h1>{{ blog.caption }}</h1>
-        {% endblock %}
-
-        {% load markup %}
-        {% block article_content %}
-            {{ blog.content|markdown }}
-        {% endblock %} 
-        <div class="row-fluid">
-            <div class="span3">
-                <p>  
-                    {% for tag in blog.tags.all %}
-                        <i class="icon-tag"></i>  {{ tag }}
-                    {% endfor %}
-                </p>  
-            </div>
-            <div class="span2 offset7">
-                <a href="/smallblog/blog/{{ blog.id }}/del/" title="delete"><i class="icon-trash"></i></a>
-                <a href="/smallblog/blog/{{ blog.id }}/update/" title="edit"><i class="icon-edit"></i></a>
-                <a href="#cmt" title="comment"><i class=" icon-comment"></i></a>
-            </div>
-        </div> 
+        <h2>{{ blog.caption }}</h2>
     {% endblock %}
-</article>
-{% block comments %}    
-<article>     
-    {% get_comment_form for blog as blog_form %}    
-        <form action="{% comment_form_target %}" method="post">
-        {% csrf_token %}
-        {{ blog_form.object_pk }}
-        {{ blog_form.content_type }}
-        {{ blog_form.timestamp }}
-        {{ blog_form.site }}
-        {{ blog_form.submit_date }}
-        {{ blog_form.security_hash }}
-        <p><label for="id_email">email: </label><input class="input-xxlarge" id="id_email" type="email" name="email"></p>
-        <p><label for="id_comment">comment: </label><textarea class="input-xxlarge" id="id_comment" name="comment" placeholder="please enter comment" required="required"></textarea></p>
-        <p style="display:none;"><label for="id_honeypot">如果你在该字段中输入任何内容，那么你的评论就会被视为垃圾评论。</label> <input type="text" name="honeypot" id="id_honeypot"></p>
-        <tr>
-          <td colspan="2">
-            <input class="btn btn-info" type="submit" name="submit" value="Post">
-            {# <input class="btn btn-info" type="submit" name="preview" value="Preview"> #}
-            <input type='hidden' name='next' value='{{ url }}'/>
-          </td>
-        </tr>
-      </form>    
+    <p class="muted">
+        <i class="icon-user"></i><small> {{ blog.author }}</small>  
+        <i class="icon-time"></i><small> {{ blog.publish_time }}</small>
+    </p>
+    <hr class="soften">
+    <section>
+        <div class="blog-content">
+            {% load markup %}
+            {% block article_content %}
+                {{ blog.content|markdown }}
+            {% endblock %} 
+        </div>
+    </section>
+    <section>
+        <div class="row-fluid post-info">
+        <div class="span3">
+            <p>  
+                {% for tag in blog.tags.all %}
+                    <i class="icon-tag"></i>  <small class="muted">{{ tag }}</small>
+                {% endfor %}
+            </p>  
+        </div>
+        <div class="span2 offset7">
+            <a href="/simpleblog/blog/{{ blog.id }}/del/" title="delete"><i class="icon-trash"></i></a>
+            <a href="/simpleblog/blog/{{ blog.id }}/update/" title="edit"><i class="icon-edit"></i></a>
+            {% get_comment_count for blog as comment_count %}
+            <a href="#cmt" title="comment"><i class=" icon-comment"></i>{{ comment_count }}</a>
+        </div>
+    </div>
+    <hr class="soften">
+    </section>
+    <section>
+        <a href="javascript:var d=document,w=window,f='http://fanfou.com/share',l=d.location,e=encodeURIComponent,p='?u='+e(l.href)+'?t='+e(d.title)+'?d='+e(w.getSelection?w.getSelection().toString():d.getSelection?d.getSelection():d.selection.createRange().text)+'?s=bl';if(!w.open(f+'r'+p,'sharer','toolbar=0,status=0,width=600,height=400')){l.href=f+'.new'+p;}void(0)"><img src="http://static.fanfou.com/img/icon.gif" alt="分享到饭否" /></a>
+    </section>    
+    
 </article>
 
+{% endblock %}
+
+{% block comments %}    
 <article id="cmt">
+    {% get_comment_count for blog as comment_count %}    
+        <h4 class="muted comtop">{{ comment_count }} Comments</h4>
+        <hr class="soften">  
     {% get_comment_list for blog as blog_com %}
     {% for comment in blog_com %}
-        <div class="well">
-            <img style="width: 48px;height: 48px" src="{% gravatar_url comment.user_email %}">
-            <p class="muted"><small>{{ comment.user }}</small>  在 <small>{{ comment.submit_date|date:"F,j,Y" }}</small>  回应了此文字</p>       
-            {{ comment.comment|markdown }} 
-        </div>                   
+        <div class="container-fluid none-padding">
+            <div class="row-fluid">
+                <div class="span1">
+                <img class="gravatar" src="{% gravatar_url comment.user_email %}">
+                </div>
+                <div class="span10">
+                <p class="muted"><small>{{ comment.user }}</small><small>{{ comment.submit_date|date:"F,j,Y" }}</small></p>      
+                {{ comment.comment|markdown }} 
+                </div>
+            </div>           
+        </div>
+        <hr class="soften">                   
     {% endfor %}
-</article>      
+</article>
+
+<article >     
+    {% get_comment_form for blog as blog_form %}  
+        <div id="comment_form">
+            <h4 class="muted comtop">New Comments</h4>
+            <form class="form-horizontal" action="{% comment_form_target %}" method="post">
+                <fieldset>
+                {% csrf_token %}
+                {{ blog_form.object_pk }}
+                {{ blog_form.content_type }}
+                {{ blog_form.timestamp }}
+                {{ blog_form.site }}
+                {{ blog_form.submit_date }}
+                {{ blog_form.security_hash }}
+                <div class="control-group">
+                    <label class="control-label" for="id_name">name: </label>
+                    <div class="controls">
+                        <input type="text" id="id_name" class="input-xlarge" name="name" placeholder="please enter name" required="required">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="id_email">email: </label>
+                    <div class="controls">
+                        <input class="input-xlarge" id="id_email" type="email" name="email" placeholder="please enter email" required="required">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="id_comment">comment: </label>
+                    <div class="controls">
+                        <textarea class="input-xlarge" id="id_comment" name="comment" placeholder="please enter comment" required="required"></textarea>
+                    </div>
+                </div>
+                <p style="display:none;"><label for="id_honeypot">如果你在该字段中输入任何内容，那么你的评论就会被视为垃圾评论。</label> <input type="text" name="honeypot" id="id_honeypot"></p>
+                <div class="form-actions">
+                    <input class="btn btn-info" type="submit" name="submit" value="Post">
+                    {# <input class="btn btn-info" type="submit" name="preview" value="Preview"> #}
+                    <input type='hidden' name='next' value='/simpleblog/blog/{{ blog.id }}/commentshow/'/>
+                </div>
+                </fieldset>
+            </form> 
+        </div>
+</article>
 {% endblock %}

@@ -10,9 +10,11 @@
 ### just make sure to update the "default" image path below
 
 from django import template
-import urllib, hashlib
+import urllib
+import hashlib
 
 register = template.Library()
+
 
 class GravatarUrlNode(template.Node):
     def __init__(self, email):
@@ -24,13 +26,14 @@ class GravatarUrlNode(template.Node):
         except template.VariableDoesNotExist:
             return ''
 
-        default = "http://example.com/static/images/defaultavatar.jpg"
+        default = "http://127.0.0.1:8000/static/img/defaultavatar.png"
         size = 40
 
         gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest() + "?"
-        gravatar_url += urllib.urlencode({'d':default, 's':str(size)})
+        gravatar_url += urllib.urlencode({'d': default, 's': str(size)})
 
         return gravatar_url
+
 
 @register.tag
 def gravatar_url(parser, token):

@@ -19,7 +19,6 @@
         </div>
         {% endif %}
         <label for="id_caption">Title: </label>
-        {# <input class="input-xxlarge" id="id_caption" type="text" name="caption"> #}
         {{ form.caption }}
     </div>
     <div class="field">
@@ -29,9 +28,15 @@
         </div>
         {% endif %}        
         <label for="id_content">Content: </label>
-        {# <textarea class="input-xxlarge" name="content" id="id_content" rows="20"></textarea> #}
         {{ form.content }}
     </div>
-    <input class="btn btn-primary" type="submit" value="save and add">
+    <div class="field">
+        <label for="id_tag">tags</label>
+        {{ tag.tag_name }}
+    </div>
+    <div class="form-actions">
+        <input class="btn btn-primary" type="submit" value="save and add">
+        <button class="btn">cancle</button>
+    </div>
 </form>
 {% endblock %}

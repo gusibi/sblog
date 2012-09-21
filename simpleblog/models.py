@@ -46,6 +46,13 @@ class Blog(models.Model):
 
     objects = models.Manager()
     count_objects = BlogManager()
+    taglist = []
+
+    def save(self, *args, **kwargs):
+        super(Blog, self).save()
+        for i in self.taglist:
+            p, created = Tag.objects.get_or_create(tag_name=i)
+            self.tags.add(p)
 
     def __unicode__(self):
         return u'%s %s %s' % (self.caption, self.author, self.publish_time)

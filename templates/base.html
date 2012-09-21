@@ -8,13 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/bootstrap.css">
     <link rel="stylesheet" href="/static/css/reset.css">
-     <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
+    <link rel="stylesheet" href="/static/css/style.css">
     {# <link rel="stylesheet" href="/static/css/bootstrap-responsive.css">  #}
     <script src="/static/js/modernizr.js"></script>
+    <script src="/static/js/jquery.js"></script>
     {% block extra_head %}
             {% comment %}
                 我认为这是个非常有用的区块, 很多人已经以某种方式在使用了. 很多页面经常需要在 HTML 文档头添加些信息, 比如 RSS 源, Javascript, CSS, 以及别的应该放在文档头的信息. 你可以, 也很可能将会, 定义另外专门的区块 (比如前面的 title 区块) 来添加文档头的其它部分的信息.
@@ -50,14 +47,11 @@
                                 这是对应于之前建议的 menu 区块. 用来导航一个章节或页面.
                                 {% endcomment %}
                             {% endblock %}
-                            {% block article_content %}
-                            {% endblock %}
+                            {% block article_content %}{% endblock %}
                         {% endblock %}
                         
-                        {% block article_menu %}                                
-                            {% endblock %}
-                            {% block comments %}
-                            {% endblock %}
+                        {% block article_menu %} {% endblock %}
+                        {% block comments %} {% endblock %}
                         </div>
                         <div class="span2 offset1">
                             {% block aside %}
@@ -75,7 +69,6 @@
             {% endblock %}
         {% endblock %}
     </div>
-    <script src="/static/js/jquery.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
 </body> 
 
