@@ -18,4 +18,4 @@ Admin 使用grappelli优化
 21/9/12
 comments 添加了ajax支持
 添加博客页面添加了添加标签
-又花了界面
+优化了界面
