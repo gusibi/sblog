@@ -1,0 +1,23 @@
+{% extends "blog_base.html" %}
+{% load comments %}
+
+{% block title %} tag: {{ tag.tag_name }} {% endblock %}
+
+{% block article %}
+<article class='content-main'>
+    {% for blog in blogs %}     
+        <h3><a href="/simpleblog/blog/{{ blog.id }}">{{ blog.caption }}</a></h3>        
+        <hr>         
+    {% endfor %} 
+</article>  
+{% endblock %}
+
+{% block aside %}
+    {% block tags %}
+        <div class="well">
+            {% for tag in tags %}
+            <span class="label"><a href="/simpleblog/blog/tag/{{ tag.id }}">{{ tag }}</a></span>
+            {% endfor %}
+        </div>
+    {% endblock %}
+{% endblock %}

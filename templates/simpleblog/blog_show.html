@@ -55,8 +55,9 @@ $(document).ready(function() {
         <div class="row-fluid post-info">
         <div class="span3">
             <p>  
+                <i class="icon-tag"></i>
                 {% for tag in blog.tags.all %}
-                    <i class="icon-tag"></i>  <small class="muted">{{ tag }}</small>
+                     <small class="muted"> {{ tag }} </small>
                 {% endfor %}
             </p>  
         </div>

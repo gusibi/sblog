@@ -1,9 +1,7 @@
 from django.shortcuts import render_to_response
 from django.http import Http404
 from django.http import HttpResponseRedirect
-# from django.core.context_processors import csrf
 from django.template import RequestContext
-# from django.http import HttpResponse
 from django.contrib.comments import get_delete_url
 from simpleblog.forms import BlogForm
 from simpleblog.forms import TagForm
@@ -14,13 +12,22 @@ from simpleblog.models import Tag
 
 def blog_list(request):
     blogs = Blog.objects.order_by('-id')
-    return render_to_response("blog_list.html", {"blogs": blogs})
+    tags = Tag.objects.all()
+    return render_to_response("blog_list.html", {"blogs": blogs, "tags": tags})
+
+
+def blog_filter(request, id=''):
+    tags = Tag.objects.all()
+    tag = Tag.objects.get(id=id)
+    blogs = tag.blog_set.all()
+    return render_to_response("blog_filter.html",
+        {"blogs": blogs, "tag": tag, "tags": tags})
 
 
 def blog_show(request, id=''):
     try:
         blog = Blog.objects.get(id=id)
-        tags = blog.tags.all()
+        tags = Tag.objects.all()
     except Blog.DoesNotExist:
         raise Http404
     return render_to_response("blog_show.html",
@@ -76,15 +83,22 @@ def blog_add(request):
     else:
         form = BlogForm()
         tag = TagForm()
-    return render_to_response('blog_add.html', {'form': form, 'tag': tag}, context_instance=RequestContext(request))
+    return render_to_response('blog_add.html',
+        {'form': form, 'tag': tag}, context_instance=RequestContext(request))
 
 
 def blog_update(request, id=""):
     id = id
     if request.method == 'POST':
         form = BlogForm(request.POST)
-        if form.is_valid():
+        tag = TagForm(request.POST)
+        if form.is_valid() and tag.is_valid():
             cd = form.cleaned_data
+            cdtag = tag.cleaned_data
+            tagname = cdtag['tag_name']
+            tagnamelist = tagname.split()
+            for taglist in tagnamelist:
+                Tag.objects.get_or_create(tag_name=taglist.strip())
             title = cd['caption']
             content = cd['content']
             blog = Blog.objects.get(id=id)
@@ -92,6 +106,15 @@ def blog_update(request, id=""):
                 blog.caption = title
                 blog.content = content
                 blog.save()
+                for taglist in tagnamelist:
+                    blog.tags.add(Tag.objects.get(tag_name=taglist.strip()))
+                    blog.save()
+                tags = blog.tags.all()
+                for tagname in tags:
+                    tagname = unicode(str(tagname), "utf-8")
+                    if tagname not in tagnamelist:
+                        notag = blog.tags.get(tag_name=tagname)
+                        blog.tags.remove(notag)
             else:
                 blog = Blog(caption=blog.caption, content=blog.content)
                 blog.save()
@@ -102,4 +125,14 @@ def blog_update(request, id=""):
         except Exception:
             raise Http404
         form = BlogForm(initial={'caption': blog.caption, 'content': blog.content}, auto_id=False)
-    return render_to_response('blog_add.html', {'blog': blog, 'form': form, 'id': id}, context_instance=RequestContext(request))
+        tags = blog.tags.all()
+        if tags:
+            taginit = ''
+            for x in tags:
+                taginit += str(x) + ' '
+            tag = TagForm(initial={'tag_name': taginit})
+        else:
+            tag = TagForm()
+    return render_to_response('blog_add.html',
+        {'blog': blog, 'form': form, 'id': id, 'tag': tag},
+        context_instance=RequestContext(request))

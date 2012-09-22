@@ -35,4 +35,11 @@
     {% block addblog %}
         <a class="btn btn-primary" href="/simpleblog/blog/add/"><i class="icon-plus icon-white"></i> add new blog</a>
     {% endblock %}
+    {% block tags %}
+        <div class="well">
+            {% for tag in tags %}
+            <span class="label"><a href="/simpleblog/blog/tag/{{ tag.id }}">{{ tag }}</a></span>
+            {% endfor %}
+        </div>
+    {% endblock %}
 {% endblock %}
