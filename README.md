@@ -16,6 +16,12 @@ Admin 使用grappelli优化
 使用说明：http://en.gravatar.com/site/implement/images/django/
 
 21/9/12
+
 comments 添加了ajax支持
 添加博客页面添加了添加标签
 优化了界面
+
+22/9/12
+
+添加了增加多个标签 删除标签功能
+添加了按标签检索功能
