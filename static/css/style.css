@@ -1,3 +1,103 @@
+/*header*/
+.nav .new-wrapper {
+    position: relative;
+    float: left;
+}
+
+i {
+    display: inline-block;
+    zoom: 1;
+    vertical-align: text-top;
+    background-image: url(../img/twitter_web_sprite_icons.png);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+}
+.nav i {
+    float: left;
+    margin: -1px 6px 0 0;
+}
+
+.nav-home, .nav-topics, .nav-people, .nav-me, .nav-tweet {
+    height: 22px;
+}
+
+.nav .active .nav-new{
+    display: block;
+}
+.nav-new {
+    background-position: -200px -80px;
+    width: 24px;
+    height: 3px;
+}
+.nav-home {
+    background-position: 0 -50px;
+    width: 21px;
+}
+a:hover .nav-home {
+    background-position: 0 -80px;
+}
+.active .nav-home, 
+.active a:hover .nav-home {
+    background-position: 0 -110px;
+}
+.nav-people {
+    background-position: -80px -50px;
+    width: 21px;
+}
+a:hover .nav-people {
+    background-position: -80px -80px;
+}
+.active .nav-people, 
+.active a:hover .nav-people {
+    background-position: -80px -110px;
+}
+.nav-me {
+    background-position: -120px -50px;
+    width: 21px;
+}
+a:hover .nav-me {
+    background-position: -120px -80px;
+}
+.active .nav-me, 
+.active a:hover .nav-me {
+    background-position: -120px -110px;
+}
+.nav .nav-new {
+    position: absolute;
+    top: 26px;
+    left: 50%;
+    display: none;
+    height: 3px;
+    margin-left: -14px;
+    line-height: 1;
+    text-align: center;
+}
+
+.sbrand{
+    position: absolute;
+    top: 0;
+    font-size: 20px;
+    padding-top:10px; 
+    left: 45%;
+    color: #000;
+    font-weight: bold;
+}
+
+.nav-session {
+    background-position: -160px -50px;
+    width: 20px;
+    height: 21px;
+}
+.nav-tweet {
+background-position: -200px -50px;
+width: 22px;
+height: 18px;
+}
+
+#myModal{
+    display: none;
+}
+
 hr.soften {
     clear: both; 
     float: none; 
@@ -55,10 +155,44 @@ form fieldset label {
     width: 70%;
 }
 
-#id_content{
+form textarea{
     display: block;
     width: 70%;
     height: 400px;
     padding: 5px;
     font-size: 14px;
+}
+
+.btn-tweet {
+    padding: 3px 4px 5px 10px;
+}
+
+textarea.twitter{
+    width: 512px;
+    height: 64px;
+    overflow: hidden;
+    padding-bottom: 5px;
+    resize: vertical;
+}
+
+.twitter-modal-header{
+    border: none;
+}
+.twitter-modal-header h3{
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: bold;
+}
+.twitter-modal-body{
+    padding: 0 15px;
+}
+
+.twitter-modal-footer{
+    border: none;
+    padding-top: 10px; 
+}
+
+textarea.comment{
+    height: 160px;
+    width: 70%;
 }

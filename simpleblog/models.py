@@ -56,3 +56,12 @@ class Blog(models.Model):
 
     def __unicode__(self):
         return u'%s %s %s' % (self.caption, self.author, self.publish_time)
+
+
+class Weibo(models.Model):
+    massage = models.CharField(max_length=200)
+    author = models.ForeignKey(Author)
+    publish_time = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.massage

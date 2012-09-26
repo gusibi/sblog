@@ -6,7 +6,7 @@
 {% block article %}
 <article class='content-main'>
     {% for blog in blogs %}     
-        <h3><a href="/simpleblog/blog/{{ blog.id }}">{{ blog.caption }}</a></h3>        
+        <h3><a href="{% url detailblog blog.id %}">{{ blog.caption }}</a></h3>        
         <hr>         
     {% endfor %} 
 </article>  
@@ -16,7 +16,7 @@
     {% block tags %}
         <div class="well">
             {% for tag in tags %}
-            <span class="label"><a href="/simpleblog/blog/tag/{{ tag.id }}">{{ tag }}</a></span>
+            <span class="label"><a href="{% url filtrblog tag.id %}">{{ tag }}</a></span>
             {% endfor %}
         </div>
     {% endblock %}

@@ -1,19 +1,25 @@
 from django.shortcuts import render_to_response
 from django.http import Http404
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from django.contrib.comments import get_delete_url
+# from django.views.decorators.csrf import csrf_protect
+from django.core.context_processors import csrf
 from simpleblog.forms import BlogForm
 from simpleblog.forms import TagForm
 from simpleblog.models import Blog
 from simpleblog.models import Author
 from simpleblog.models import Tag
+from simpleblog.models import Weibo
 
 
 def blog_list(request):
     blogs = Blog.objects.order_by('-id')
     tags = Tag.objects.all()
-    return render_to_response("blog_list.html", {"blogs": blogs, "tags": tags})
+    weibos = Weibo.objects.order_by('-publish_time')[:5]
+    return render_to_response("blog_list.html",
+        {"blogs": blogs, "tags": tags, "weibos": weibos},
+        context_instance=RequestContext(request))
 
 
 def blog_filter(request, id=''):
@@ -22,6 +28,19 @@ def blog_filter(request, id=''):
     blogs = tag.blog_set.all()
     return render_to_response("blog_filter.html",
         {"blogs": blogs, "tag": tag, "tags": tags})
+
+
+def blog_search(request):
+    tags = Tag.objects.all()
+    if 'search' in request.GET:
+        search = request.GET['search']
+        blogs = Blog.objects.filter(caption__icontains=search)
+        return render_to_response('blog_filter.html',
+            {"blogs": blogs, "tags": tags}, context_instance=RequestContext(request))
+    else:
+        blogs = Blog.objects.order_by('-id')
+        return render_to_response("blog_list.html", {"blogs": blogs, "tags": tags},
+            context_instance=RequestContext(request))
 
 
 def blog_show(request, id=''):
@@ -35,17 +54,9 @@ def blog_show(request, id=''):
         context_instance=RequestContext(request))
 
 
-def blog_add_comment(request, id=''):
-    blog = Blog.objects.get(id=id)
-    return render_to_response('blog_add_comments.html',
-            {"blog": blog},
-            context_instance=RequestContext(request))
-
-
 def blog_show_comment(request, id=''):
     blog = Blog.objects.get(id=id)
-    de = get_delete_url
-    return render_to_response('blog_comments_show.html', {"blog": blog, "de": de})
+    return render_to_response('blog_comments_show.html', {"blog": blog})
 
 
 def blog_del(request, id=""):
@@ -85,6 +96,32 @@ def blog_add(request):
         tag = TagForm()
     return render_to_response('blog_add.html',
         {'form': form, 'tag': tag}, context_instance=RequestContext(request))
+
+
+def show_weibo(request):
+    weibos = Weibo.objects.order_by('-publish_time')[:5]
+    return render_to_response("blog_twitter.html", {"weibos": weibos})
+
+
+def add_weibo(request):
+    c = {}
+    c.update(csrf(request))
+    if request.method == 'POST':
+        massage = request.POST['twitter']
+        author = Author.objects.get(id=1)
+        massage = Weibo(massage=massage, author=author)
+        massage.save()
+        weibos = Weibo.objects.order_by('-publish_time')[:5]
+        return render_to_response("blog_twitter.html",
+        {"weibos": weibos},
+        context_instance=RequestContext(request))
+    else:
+        return HttpResponse('dddd')
+        # blogs = Blog.objects.order_by('-id')
+        # tags = Tag.objects.all()
+        # return render_to_response("blog_list.html",
+        #     {"blogs": blogs, "tags": tags},
+        #     context_instance=RequestContext(request))
 
 
 def blog_update(request, id=""):

@@ -14,7 +14,7 @@ table {
     border-collapse:collapse;
     border-spacing:0;
 }
-ol, ul {
+article ol, article ul {
     padding-left: 20px;
 }
 ol.errorlist, ul.errorlist {

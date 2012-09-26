@@ -14,7 +14,7 @@
                 </div>
                 <div class="span10">
                 <p class="muted"><small>{{ comment.user }}</small><small>{{ comment.submit_date|date:"F,j,Y" }}</small></p>      
-                {{ comment.comment|markdown }} 
+                {{ comment.comment|markdown:'safe,codehilite' }} 
                 </div>
             </div>           
         </div>

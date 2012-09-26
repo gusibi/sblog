@@ -2,9 +2,9 @@
 {% load comments %}
 {% load gravatar %}
 
-{% block title %} {{ blog.caption }} {% endblock %}  
-{% block script %}
-    <script type="text/javascript" charset="utf-8">
+{% block title %} {{ blog.caption }} {% endblock %}
+{% block showblogscript %}
+<script type="text/javascript" charset="utf-8">
 function bindPostCommentHandler() {
     $('#comment_form form input.submit-preview').remove();
     $('#comment_form form').submit(function() {
@@ -16,6 +16,7 @@ function bindPostCommentHandler() {
             dataType: "html",
             success: function(html, textStatus) {
                 $('#cmt').replaceWith(html);
+                alert(html);
                 $('#comment_form form')[0].reset();
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -47,7 +48,7 @@ $(document).ready(function() {
         <div class="blog-content">
             {% load markup %}
             {% block article_content %}
-                {{ blog.content|markdown }}
+                {{ blog.content|markdown:"safe,codehilite" }}
             {% endblock %} 
         </div>
     </section>
@@ -62,18 +63,14 @@ $(document).ready(function() {
             </p>  
         </div>
         <div class="span2 offset7">
-            <a href="/simpleblog/blog/{{ blog.id }}/del/" title="delete"><i class="icon-trash"></i></a>
-            <a href="/simpleblog/blog/{{ blog.id }}/update/" title="edit"><i class="icon-edit"></i></a>
+            <a href="{% url delblog blog.id %}" title="delete"><i class="icon-trash"></i></a>
+            <a href="{% url updateblog blog.id %}" title="edit"><i class="icon-edit"></i></a>
             {% get_comment_count for blog as comment_count %}
             <a href="#cmt" title="comment"><i class=" icon-comment"></i>{{ comment_count }}</a>
         </div>
     </div>
     <hr class="soften">
-    </section>
-    <section>
-        <a href="javascript:var d=document,w=window,f='http://fanfou.com/share',l=d.location,e=encodeURIComponent,p='?u='+e(l.href)+'?t='+e(d.title)+'?d='+e(w.getSelection?w.getSelection().toString():d.getSelection?d.getSelection():d.selection.createRange().text)+'?s=bl';if(!w.open(f+'r'+p,'sharer','toolbar=0,status=0,width=600,height=400')){l.href=f+'.new'+p;}void(0)"><img src="http://static.fanfou.com/img/icon.gif" alt="分享到饭否" /></a>
     </section>    
-    
 </article>
 
 {% endblock %}
@@ -92,7 +89,7 @@ $(document).ready(function() {
                 </div>
                 <div class="span10">
                 <p class="muted"><small>{{ comment.user }}</small><small>{{ comment.submit_date|date:"F,j,Y" }}</small></p>      
-                {{ comment.comment|markdown }} 
+                {{ comment.comment|markdown:'safe,codehilite' }} 
                 </div>
             </div>           
         </div>
@@ -128,14 +125,14 @@ $(document).ready(function() {
                 <div class="control-group">
                     <label class="control-label" for="id_comment">comment: </label>
                     <div class="controls">
-                        <textarea class="input-xlarge" id="id_comment" name="comment" placeholder="please enter comment" required="required"></textarea>
+                        <textarea class="input-xlarge comment" id="id_comment" name="comment" placeholder="please enter comment" required="required"></textarea>
                     </div>
                 </div>
                 <p style="display:none;"><label for="id_honeypot">如果你在该字段中输入任何内容，那么你的评论就会被视为垃圾评论。</label> <input type="text" name="honeypot" id="id_honeypot"></p>
                 <div class="form-actions">
                     <input class="btn btn-info" type="submit" name="submit" value="Post">
                     {# <input class="btn btn-info" type="submit" name="preview" value="Preview"> #}
-                    <input type='hidden' name='next' value='/simpleblog/blog/{{ blog.id }}/commentshow/'/>
+                    <input type='hidden' name='next' value='{% url showcomment blog.id %}'/>
                 </div>
                 </fieldset>
             </form> 

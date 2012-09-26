@@ -24,3 +24,8 @@ class BlogForm(forms.Form):
 class TagForm(forms.Form):
     """docstring for TagForm"""
     tag_name = forms.CharField()
+
+
+class WeiboForm(forms.Form):
+    """docstring for WeiboForm"""
+    massage = forms.CharField(widget=forms.Textarea)
