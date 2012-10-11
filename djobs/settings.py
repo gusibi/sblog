@@ -116,9 +116,6 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     "/home/gs/djobs/templates",
-    "/home/gs/djobs/templates/contact",
-    "/home/gs/djobs/templates/djobs",
-    "/home/gs/djobs/templates/books",
     "/home/gs/djobs/templates/simpleblog",
 )
 
@@ -142,8 +139,6 @@ INSTALLED_APPS = (
     'django.contrib.markup',
     'django.contrib.comments',
     'django.contrib.staticfiles',
-    'books',
-    'contact',
     'simpleblog',
 )
 
