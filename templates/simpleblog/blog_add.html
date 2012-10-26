@@ -1,42 +1,139 @@
 {% extends "blog_base.html" %}
 
 {% block title %} 发布文字 {% endblock %}   
-
+{% block otherscript %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+                $("#hint a").popover();            
+            })
+    </script>
+{% endblock %}
 
 {% block article %} 
+{% comment %}
 {% if form.errors %}
     <div class="alert alert-error">
         Please correct the error {{ form.errors|pluralize }} below.
     </div>
 {% endif %}
+{% endcomment %}
 
 <form action="" method="post">
     {% csrf_token %} 
     <div class="field">
+        <label for="id_caption">Title: </label>
         {% if form.caption.errors %}
         <div class="alert alert-error">
             {{ form.caption.errors }}          
         </div>
         {% endif %}
-        <label for="id_caption">Title: </label>
         {{ form.caption }}
     </div>
-    <div class="field">
+    <div class="field">        
+        <label for="id_content">Content: </label>
         {% if form.content.errors %}
         <div class="alert alert-error">
             {{ form.content.errors }}
         </div>
-        {% endif %}        
-        <label for="id_content">Content: </label>
+        {% endif %}
         {{ form.content }}
     </div>
     <div class="field">
         <label for="id_tag">tags</label>
+        {% if tag.tag_name.errors %}
+        <div class="alert alert-error">
+            {{ tag.tag_name.errors }}
+        </div>
+        {% endif %}
         {{ tag.tag_name }}
     </div>
     <div class="form-actions">
         <input class="btn btn-primary" type="submit" value="save and add">
-        <button class="btn">cancle</button>
+        <a href="#" class="btn">Save as Draft</a>
     </div>
 </form>
+{% endblock %}
+
+{% block aside %}
+<div id="aside">
+    <div class="alert alert-info">
+    <h4>markdown syntax</h4>
+</div>
+<div id="hint" class="row well">
+    <ul id="mark-prompt">
+        <li><a class="btn btn-primary" rel="popover" href="#"  data-trigger="hover" 
+            data-original-title="Strong"
+            data-content="使用星号（*）和底线（_）作为标记强调字词的符号，被 * 或 _ 包围的字词会被转成用 &lsaquo;em&rsaquo; 标签包围，用两个 * 或 _ 包起来的话，则会被转成 &lsaquo;strong&rsaquo;">
+            <i class="icon-bold icon-white"></i> 强调                
+            </a>
+        </li>
+        <li><a class="btn btn-info" rel="popover" href="#" data-trigger="hover" 
+            data-original-title="List" data-placement="bottom"
+            data-content="Markdown 支持有序列表和无序列表。无序列表使用星号、加号或是减号作为列表标记：<br/>
+            *  &emsp; Red<br/>
+            *  &emsp; Green<br/>
+            等同于：.....<br/>
+            +  &emsp; Red<br/>
+            +  &emsp; Green<br/>
+            也等同于：<br/>
+            -   &emsp; Red<br/>
+            -   &emsp; Green<br/>
+            有序列表则使用数字接着一个英文句点：<br/>
+            1.  &emsp; Red<br/>
+            2.  &emsp; Green">
+            <i class="icon-list icon-white"></i> 列表                
+            </a>
+        </li>
+        <li><a class="btn btn-warning" rel="popover" href="#" data-trigger="hover" 
+            data-original-title="Link"
+            data-content="Markdown 支持两种形式的链接语法： 行内式和参考式两种形式。<br/>
+            链接文字都是用 [方括号] 来标记<br/>
+            This is [an example](http://example.com/ &ldquo;Title&rdquo;) inline link.<br/> 
+            参考式的链接是:<br/>
+            This is [an example] [id] reference-style link.<br/>
+            接着，在文件的任意处：<br/>
+            [id]: http://example.com/  &ldquo;Optional Title Here&rdquo;
+            ">
+            <i class="icon-hand-up icon-white"></i> 链接                
+            </a>
+        </li>
+        <li><a class="btn btn-inverse" rel="popover" href="#" data-trigger="hover" 
+            data-original-title="Blockquotes"
+            data-content="在每行的最前面加上 >">
+            <i class="icon-comment icon-white"></i> 引用                
+            </a>
+        </li>
+        <li><a class="btn btn-success" rel="popover" href="#" data-trigger="hover" 
+            data-original-title="Picture"
+            data-content="行内式的图片语法看起来像是：<br/>
+            ![Alt text](/path/to/img.jpg)<br/>
+            参考式的图片语法则长得像这样：<br/>
+            ![Alt text][id]<br/>
+            [id]: url/to/image  &ldquo;Optional title attribute&ldquo;" >
+            <i class="icon-picture icon-white"></i> 图片                
+            </a>
+        </li>
+        <li><a class="btn btn-danger" rel="popover" href="#" data-trigger="hover" 
+            data-original-title="Code"
+            data-content="进 4 个空格或是 1 个制表符就可以">
+            <i class="icon-leaf icon-white"></i> 代码                
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="accordion" id="accordion2">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                Other Syntax:
+            </a>
+        </div>
+        <div id="collapseOne" class="accordion-body collapse in">
+            <div class="accordion-inner">
+            Anim pariatur cliche...
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 {% endblock %}

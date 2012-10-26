@@ -18,8 +18,9 @@ article ol, article ul {
     padding-left: 20px;
 }
 ol.errorlist, ul.errorlist {
-  list-style: none outside none;
+    list-style: none outside none;
 }
+
 article, aside, dialog, figure, footer, header,hgroup, nav, section { 
     display:block;
 }

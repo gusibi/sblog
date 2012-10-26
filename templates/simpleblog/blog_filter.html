@@ -6,8 +6,21 @@
 {% block article %}
 <article class='content-main'>
     {% for blog in blogs %}     
-        <h3><a href="{% url detailblog blog.id %}">{{ blog.caption }}</a></h3>        
-        <hr>         
+        <h3><a href="{% url detailblog blog.id %}">{{ blog.caption }}</a></h3> 
+        <div class="row-fluid">
+            <div class="span3">
+                <p class="muted"><i class="icon-time"></i><small> {{ blog.publish_time }}</small></p>       
+            </div>
+            <div class="span2 offset7">
+                <a href="{% url delblog blog.id %}" title="delete"><i class="icon-trash"></i></a>
+                <a href="{% url updateblog blog.id %}" title="edit"><i class="icon-edit"></i></a>
+                {% get_comment_count for blog as comment_count %}
+                <a href="{% url detailblog blog.id %}#cmt" title="comment"><i class=" icon-comment"></i>{{ comment_count }}</a>
+            </div>
+        </div>        
+        <hr class="soften">
+    {% empty %} 
+        <p class="text-info">no result!!</p>             
     {% endfor %} 
 </article>  
 {% endblock %}

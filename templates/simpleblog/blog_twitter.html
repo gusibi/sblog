@@ -1,8 +1,9 @@
 {% block twitter %}
     <div id="weibo" class="well">
         {% for weibo in weibos %}
-            <p>{{ weibo.publish_time }}</p>
-            <p>{{ weibo }}</p>
+            <p class="text-info">{{ weibo }}</p>                
+            <p class="text-success"><small>{{ weibo.publish_time }}</small></p>
+            <hr class="soften">
         {% endfor %}
     </div>
 {% endblock %}

@@ -5,9 +5,17 @@
     <style>
         body {
             padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
+        }
+        .row{
+            margin-left: 0;
+        }
+        #mark-prompt li{
+            list-style: none outside none;
+            padding: 10px 9px 3px 0;
+            float: left;
+        }
     </style> 
-    {% block script %}  
+    {% block script %}
         <script type="text/javascript">
             function sendtwitter(){
                 $('#myModal form').submit(function(){
@@ -35,6 +43,7 @@
         </script>     
     {% endblock %}
     {% block showblogscript %}{% endblock %}
+    {% block otherscript %}{% endblock %}
 {% endblock %}   
 
 {% block header %}
@@ -47,7 +56,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <span class="sbrand">SimpleBlog</span>               
+                <span class="sbrand">SimpleBlog</span>
                 <ul class="nav">
                     <li class="active divider-vertical">           
                         <a href="{% url bloglist %}">
@@ -120,12 +129,9 @@
         </div>
         <div class="modal-footer twitter-modal-footer">
             <button class="btn"  data-dismiss="modal" aria-hidden="true">Close</button>
-            <button id="send" class="btn btn-primary" type="submit" name="submit" aria-hidden="true">Save changes</button>
+            <button id="send" class="btn btn-primary" type="submit" name="submit" >Save changes</button>
         </div>
         </form>
-    </div>   
-    <div id="test" class="hide">
-        dddddd
     </div>
     {% endblock %}
 {% endblock %}

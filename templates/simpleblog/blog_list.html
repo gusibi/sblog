@@ -6,14 +6,14 @@
 {% block article %}
 <article class='content-main'>
     {% for blog in blogs %}     
-        <h4><a href="{% url detailblog blog.id %}">{{ blog.caption }}</a></h4>         
+        <h4><a href="{% url detailblog blog.id %}">{{ blog.caption }}</a></h4>
         <p class="muted">  
             {% for tag in blog.tags.all %}
                 <i class="icon-tag"></i>  <small>{{ tag }}</small>
             {% endfor %}
         </p>  
         {% load markup %}
-        <p>{{ blog.content|markdown:'codehilite' }} </p> 
+        <div>{{ blog.content|markdown:'codehilite' }} </div> 
 
         <div class="row-fluid">
             <div class="span3">
@@ -35,8 +35,9 @@
     {% block twitter %}
         <div id="weibo" class="well">
             {% for weibo in weibos %}
-                <p>{{ weibo.publish_time }}</p>
-                <p>{{ weibo }}</p>
+                <p class="text-info">{{ weibo }}</p>                
+                <p class="text-success"><small>{{ weibo.publish_time }}</small></p>
+                <hr class="soften">
             {% endfor %}
         </div>
     {% endblock %}

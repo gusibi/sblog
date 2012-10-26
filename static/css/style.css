@@ -144,24 +144,34 @@ h1, h2, h3, h4, h5, h6{
 .blog-content{
     margin: 20px 0;
 }
-
 form fieldset label {
-    width: 20%;
+    width: 100px;
     margin: 4px 0 5px 0;
     font-weight: bold;
-    }
-
+}
 .alert-error{
-    width: 70%;
+    width: 65%;
 }
 
 form textarea{
     display: block;
-    width: 70%;
+    width: 95%;
     height: 400px;
     padding: 5px;
     font-size: 14px;
+    resize: vertical;
 }
+
+/*add blog form*/
+.field label{
+    display: block;
+    margin: 0 0 5px 0;
+    font-weight: bold;
+}
+.field input{
+    width: 70%;
+}
+/* end add blog*/
 
 .btn-tweet {
     padding: 3px 4px 5px 10px;

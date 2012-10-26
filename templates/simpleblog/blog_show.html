@@ -16,7 +16,6 @@ function bindPostCommentHandler() {
             dataType: "html",
             success: function(html, textStatus) {
                 $('#cmt').replaceWith(html);
-                alert(html);
                 $('#comment_form form')[0].reset();
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
